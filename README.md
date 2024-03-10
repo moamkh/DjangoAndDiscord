@@ -5,6 +5,10 @@ Easily connect your discord app to django to create a web app for your discord b
 
 
 ## Installation
+- Ceate your .env file in the root of the directory then create a variable and put your token there
+ ```bash
+  DISCORD_API_TOKEN=<your token here>
+```
 - Ceate your virtual environment
 ```bash
   python -m venv venv
