@@ -67,8 +67,6 @@ class Mute(commands.Cog):
             await ctx.send(embed=conf_embed)
 
         mute_role = discord.utils.get(ctx.guild.roles, id=int(mute_role_id))
-        print(mute_role)
-        print(f'Member passed {member.name} with {member.id}.')
         
         if mute_role not in member.roles:
             print("Condition meat! ")
@@ -104,8 +102,6 @@ class Mute(commands.Cog):
         mute_role_obj:MuteRole =MuteRole.objects.get(guild_id = str(ctx.guild.id))
         mute_role_id = mute_role_obj.role_id 
         mute_role = discord.utils.get(ctx.guild.roles, id=int(mute_role_id))
-        print(type(mute_role))
-        print(f"All permissions {ctx.permissions}!!!")
         if mute_role in member.roles:
             await member.remove_roles(mute_role)
             conf_embed = discord.Embed(

@@ -33,27 +33,40 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild:discord.guild.Guild):
     print("trigred on_guild_join")
-    print(f"Guild roles:{guild.roles}")
-    mute_role_obj:MuteRole =  MuteRole.objects.create(guild_id=str(guild.id))
+    print("Initialized MuteRole.id with None.")
+    mute_role_obj:MuteRole =  MuteRole.objects.create(
+        guild_name=str(guild.name),
+        guild_id=str(guild.id))
 
-@bot.event
-async def on_command_error(ctx:Context,error):
-    if isinstance(error,commands.MissingRequiredArgument):
-        await ctx.send("Error : missing required arguments.are you sure u provided all the arguments?")
-
-    elif isinstance(error,commands.MissingPermissions):
-        await ctx.send("Error : missing required permissions.are you suer u have all the permissions?")
-
-    else:
-        await(ctx.send(f"Error:{error} accured with type {type(error)}"))
-    
-
-            
 @bot.event
 async def on_guild_remove(guild):
     print("trigred on_guild_remove")
+    print("Removed guild from database.")
     mute_role_obj:MuteRole =  MuteRole.objects.get(guild_id=str(guild.id))
     mute_role_obj.delete()
+
+
+@bot.event
+async def on_command_error(ctx:Context,error):
+    error_embed = discord.Embed(
+        title="Error",
+        description=error,
+        color=discord.Color.red()
+        )
+    if isinstance(error,commands.MissingRequiredArgument):
+        # await ctx.send("Error : missing required arguments.are you sure u provided all the arguments?")
+        error_embed.description = "missing required arguments.are you sure u provided all the arguments?"
+        await ctx.send(embed=error_embed)
+    elif isinstance(error,commands.MissingPermissions):
+        # await ctx.send("Error : missing required permissions.are you suer u have all the permissions?")
+        error_embed.description = "missing required permissions.are you suer u have all the permissions?"
+        await ctx.send(embed=error_embed)
+    else:
+        # await(ctx.send(f"Error:{error} accured with type {type(error)}"))
+        await ctx.send(embed=error_embed)
+
+            
+
 
 async def load():
     for filename in os.listdir('./cogs'):
